@@ -72,75 +72,37 @@ var set_slider_value = function (name, config_var, value) {
 	config[config_var] = value;
 }
 
+
+sliders = [
+  // selector, min, max, step, config_var, default
+  [ "impl-year", 2000, 2100, 1, 'implementation', 2015 ],
+  [ "conv-gdp-rate", -0.05, 0.05, 0.001, 'conv_gdp_rate', 0.02 ],
+  [ "conv-emissions-rate", 0.05, -0.05, 0.001, 'conv_emissions_rate', -0.02 ],
+  [ "conv-year", 2000, 2100, 1, 'convergence', 2030 ],
+  [ "cont-gdp-rate", 0.05, -0.05, 0.001, 'cont_gdp_rate', 0.02 ],
+  [ "cont-emissions-rate", 0.05, -0.05, 0.001, "cont_emissions_rate", -0.02 ],
+  [ "target-year", 2000, 2100, 1, 'target_year', 2050 ],
+  [ "target-amount", 10, 0, 1, 'target_amount', 1 ]
+];
+
+
 // Initialise UI objects
 $(function() {
-	$( "#impl-year" ).slider({
-		max: 2100,
-		min: 2000,
-      change: function(event, ui) { update_controls(event, ui, 'implementation'); },
- 	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
-	});
-	set_slider_value("impl-year", 'implementation', 2015);
+  for(var s in sliders) {
+	var slider = sliders[s];
+	var selector = "#" + slider[0];
 
-	$( "#conv-gdp-rate" ).slider({
-		max: 0.05,
-		min: -0.05,
-		step: 0.001,
-    	change: function(event, ui) { update_controls(event, ui, 'conv_gdp_rate'); },
- 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	$(selector).slider({
+	  max: slider[2],
+	  min: slider[1],
+	  step: slider[3],
+	  change: function(event, ui) { 
+		update_controls(event, ui, slider[4]); 
+	  },
+	  slide: function(event, ui)  { $('#label-' + event.target.id).text(ui.value); }
 	});
-	set_slider_value("conv-gdp-rate", 'conv_gdp_rate', 0.02);
-
-	$( "#conv-emissions-rate" ).slider({
-		max: 0.05,
-		min: -0.05,
-		step: 0.001,
-    	change: function(event, ui) { update_controls(event, ui, 'conv_emissions_rate'); },
- 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
-	});
-	set_slider_value("conv-emissions-rate", 'conv_emissions_rate', -0.02);
-
-	$( "#conv-year" ).slider({
-		max: 2100,
-		min: 2000,
-    	change: function(event, ui) { update_controls(event, ui, 'convergence'); },
- 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
-	});
-	set_slider_value("conv-year", 'convergence', 2030);
-
-	$( "#cont-gdp-rate" ).slider({
-		max: 0.05,
-		min: -0.05,
-		step: 0.001,
-    	change: function(event, ui) { update_controls(event, ui, 'cont_gdp_rate'); },
- 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
-	});
-	set_slider_value("cont-gdp-rate", 'cont_gdp_rate', 0.02);
-
-	$( "#cont-emissions-rate" ).slider({
-		max: 0.05,
-		min: -0.05,
-		step: 0.001,
-    	change: function(event, ui) { update_controls(event, ui, 'cont_emissions_rate'); },
- 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
-	});
-	set_slider_value("cont-emissions-rate", 'cont_emissions_rate', -0.02);
-	
-	$( "#target-year" ).slider({
-		max: 2100,
-		min: 2000,
-    	change: function(event, ui) { update_controls(event, ui, 'target_year'); },
- 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
-	});
-	set_slider_value("target-year", 2050);
-
-	$( "#target-amount" ).slider({ 
-		max: 10,
-		min: 0,
-        change: function(event, ui) { update_controls(event, ui, 'target_amount'); },
- 	    slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
-	});
-	set_slider_value("target-amount", 'target-amount', 1);
+	set_slider_value(slider[0], slider[4], slider[5]);
+  };
 
   render();
 });
