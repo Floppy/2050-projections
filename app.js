@@ -79,10 +79,10 @@ $(function() {
 	$( "#target-amount" ).slider({ 
 		max: 10,
 		min: 0,
-        change: function(event, ui) { update_controls(event, ui, 'target'); }
+        change: function(event, ui) { update_controls(event, ui, 'target'); },
  	    slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
 	set_slider_value("target-amount", 1);
 
-  render();
+    render();
 });
