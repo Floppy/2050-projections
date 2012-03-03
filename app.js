@@ -22,8 +22,8 @@ var render = function () {
   var g_dash = -0.0126; // -0.042
   var g_dash_y = 0.02;
 
-  var rates_gdp = [ g_y, g_y, g_y ];
-  var rates_emissions = [ g_x, g_x, g_x ];
+  var rates_gdp = [ 0.037, config.conv_gdp_rate, config.cont_gdp_rate ];
+  var rates_emissions = [ -0.028, config.conv_emissions_rate, config.cont_emissions_rate ];
 
   var d1 = [];
   var d2 = [];
@@ -62,37 +62,10 @@ var render = function () {
 					   ]);
 	}
 	years = milestones[phase+1] - milestones[phase];
-	emissions_per_usd *= Math.pow(1 + g_x, years);
-	gdp_per_capita *= Math.pow(1 + g_y, years);
+	emissions_per_usd *= Math.pow(1 + rates_emissions[phase], years);
+	gdp_per_capita *= Math.pow(1 + rates_gdp[phase], years);
   }
 
-  for (var i = origin; i <= implementation; i += 1) {
-    d1.push([i, emissions(i - origin, emissions_per_usd, g_x, g_y, gdp_per_capita)]);
-  }
-
-
-  years = implementation - origin;
-
-  var x1 = emissions_per_usd * Math.pow(1 + g_x, years);
-  var gdp_per_capita = gdp_per_capita * Math.pow(1 + g_y, years);
-
-  for (var i = implementation; i <= convergence; i += 1) {
-    d2.push([i, emissions(i - implementation, x1, g_dash, g_dash_y, gdp_per_capita )]);
-  }
-
-
-
-
-  var years = convergence - implementation;
-
-  var x2 = x1 * Math.pow(1 + g_x, years);
-  var gdp_per_capita = gdp_per_capita * Math.pow(1 + g_y, years);
-
-  for (var i = convergence; i <= target_year; i += 1) {
-    d3.push([i, emissions(i - convergence, x2, g_dash, g_dash_y, gdp_per_capita )]);
-  }
-  
-//  $.plot($("#placeholder"), [ d1, d2, d3 ]);
   $.plot($("#placeholder"), plots);
 
 
