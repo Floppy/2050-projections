@@ -11,7 +11,13 @@ $(function () {
     $.plot($("#placeholder"), [ d1, d2, d3 ]);
 });
 
+
 // Initialise UI objects
 $(function() {
-	$( ".slider" ).slider();
+	$( ".slider" ).slider({ 
+		max: 2100, 
+		min: 2000,
+		value: 2012,
+        change: function(event, ui) { alert(event.target.id + ' changed to ' + ui.value); }
+	});
 });
