@@ -22,6 +22,9 @@ var render = function () {
   var g_dash = -0.0126; // -0.042
   var g_dash_y = 0.02;
 
+  var rates_gdp = [ g_y, g_y, g_y ];
+  var rates_emissions = [ g_x, g_x, g_x ];
+
   var d1 = [];
   var d2 = [];
   var d3 = [];
@@ -52,8 +55,8 @@ var render = function () {
 	 plots[phase].push([i, 
 						emissions(i - milestones[phase],
 								  emissions_per_usd,
-								  g_x,
-								  g_y,
+								  rates_emissions[phase],
+								  rates_gdp[phase],
 								  gdp_per_capita
 								 )
 					   ]);
