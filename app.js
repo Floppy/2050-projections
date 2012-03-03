@@ -48,41 +48,42 @@ var update_controls = function(event, ui, config_var) {
   render();
 }
 
-var set_slider_value = function (name, value) {
+var set_slider_value = function (name, config_var, value) {
 	$( "#"+name ).slider( "option", "value", value );	
 	$( "#label-"+name ).text(value);
+	config[config_var] = value;
 }
 
 // Initialise UI objects
 $(function() {
-	$( "#impl-year" ).slider({ 
+	$( "#impl-year" ).slider({
 		max: 2100,
 		min: 2000,
       change: function(event, ui) { update_controls(event, ui, 'implementation'); },
  	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
-	set_slider_value("impl-year", 2015);
-	$( "#conv-year" ).slider({ 
+	set_slider_value("impl-year", 'implementation', 2015);
+	$( "#conv-year" ).slider({
 		max: 2100,
 		min: 2000,
     	change: function(event, ui) { update_controls(event, ui, 'convergence'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
-	set_slider_value("conv-year", 2030);
-	$( "#target-year" ).slider({ 
+	set_slider_value("conv-year", 'convergence', 2030);
+	$( "#target-year" ).slider({
 		max: 2100,
 		min: 2000,
     	change: function(event, ui) { update_controls(event, ui, 'target'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
-	set_slider_value("target-year", 2050);
-	$( "#target-amount" ).slider({ 
+	set_slider_value("target-year", 'target', 2050);
+	$( "#target-amount" ).slider({
 		max: 10,
 		min: 0,
-        change: function(event, ui) { update_controls(event, ui, 'target'); },
+        change: function(event, ui) { update_controls(event, ui, 'target-amount'); },
  	    slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
-	set_slider_value("target-amount", 1);
+	set_slider_value("target-amount", 'target-amount', 1);
 
     render();
 });
