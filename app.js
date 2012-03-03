@@ -21,23 +21,23 @@ var render = function () {
   var d1 = [];
   var d2 = [];
 
-  var emissions = function(t) {
-	return emissions_per_usd * Math.pow(1 + g_x, t) * gdp_per_capita * Math.pow(1 + g_y, t);
+  var emissions = function(t, emissions_density_at_p0, emissions_density_change, growth_change) {
+	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_per_capita * Math.pow(1 + g_y, t);
   };
 
   for (var i = origin; i <= implementation; i += 1) {
-    d1.push([i, emissions(i - origin)]);
+    d1.push([i, emissions(i - origin, emissions_per_usd, g_x)]);
   }
 
   var x1 = emissions_per_usd * Math.pow(1 + g_x, (implementation - origin));
   var gdp_per_capita = gdp_per_capita * Math.pow(1 + g_y, (implementation - origin));
 
-  var emissions = function(t) {
-	return x1 * Math.pow(1 + g_dash, t) * gdp_per_capita * Math.pow(1 + g_dash_y, t);
+  var emissions = function(t, emissions_density_at_p0, emissions_density_change) {
+	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_per_capita * Math.pow(1 + g_dash_y, t);
   };
 
   for (var i = implementation; i <= convergence; i += 1) {
-    d2.push([i, emissions(i - implementation)]);
+    d2.push([i, emissions(i - implementation, x1, g_dash)]);
   }
   
   $.plot($("#placeholder"), [ d1, d2 ]);
@@ -75,7 +75,7 @@ $(function() {
 		max: 10,
 		min: 0,
 		value: 1,
-      change: function(event, ui) { update_controls(event, ui, 'target'); }
+      change: function(event, ui) { update_controls(event, ui, 'target'); },
  	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
 
