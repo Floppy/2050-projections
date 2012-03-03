@@ -1,14 +1,16 @@
 var config = {
   origin: 2012,
   implementation: 2016,
-  convergence: 2035
+  convergence: 2035,
+  target_year: 2050
 };
 
 var render = function () {
   var origin = config.origin;
   var implementation = config.implementation;
   var convergence = config.convergence;
-  
+  var target_year = config.target_year;
+
   var emissions_per_usd = 0.233;
   var gdp_per_capita = 35000;
 
@@ -20,27 +22,32 @@ var render = function () {
 
   var d1 = [];
   var d2 = [];
+  var d3 = [];
 
-  var emissions = function(t, emissions_density_at_p0, emissions_density_change, growth_change) {
-	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_per_capita * Math.pow(1 + g_y, t);
+  var emissions = function(t, emissions_density_at_p0, emissions_density_change, growth, gdp_at_p0) {
+	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_at_p0 * Math.pow(1 + growth, t);
   };
 
   for (var i = origin; i <= implementation; i += 1) {
-    d1.push([i, emissions(i - origin, emissions_per_usd, g_x)]);
+    d1.push([i, emissions(i - origin, emissions_per_usd, g_x, g_y, gdp_per_capita)]);
   }
 
   var x1 = emissions_per_usd * Math.pow(1 + g_x, (implementation - origin));
   var gdp_per_capita = gdp_per_capita * Math.pow(1 + g_y, (implementation - origin));
 
-  var emissions = function(t, emissions_density_at_p0, emissions_density_change) {
-	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_per_capita * Math.pow(1 + g_dash_y, t);
-  };
-
   for (var i = implementation; i <= convergence; i += 1) {
-    d2.push([i, emissions(i - implementation, x1, g_dash)]);
+    d1.push([i, emissions(i - implementation, x1, g_dash, g_dash_y, gdp_per_capita )]);
+  }
+
+  var years = convergence - implementation;
+  var x2 = x1 * Math.pow(1 + g_x, years);
+  var gdp_per_capita = gdp_per_capita * Math.pow(1 + g_y, years);
+
+  for (var i = convergence; i <= target_year; i += 1) {
+    d1.push([i, emissions(i - implementation, x2, g_dash, g_dash_y, gdp_per_capita )]);
   }
   
-  $.plot($("#placeholder"), [ d1, d2 ]);
+  $.plot($("#placeholder"), [ d1 ]);
 };
 
 var update_controls = function(event, ui, config_var) {
@@ -48,36 +55,45 @@ var update_controls = function(event, ui, config_var) {
   render();
 }
 
+var set_slider_value = function (name, value) {
+	$( "#"+name ).slider( "option", "value", value );	
+	$( "#label-"+name ).text(value);
+}
+
 // Initialise UI objects
 $(function() {
 	$( "#impl-year" ).slider({ 
 		max: 2100,
 		min: 2000,
-		value: 2016,
       change: function(event, ui) { update_controls(event, ui, 'implementation'); },
  	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("impl-year", 2015);
+
 	$( "#conv-year" ).slider({ 
 		max: 2100,
 		min: 2000,
-		value: 2030,
     	change: function(event, ui) { update_controls(event, ui, 'convergence'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("conv-year", 2030);
+
 	$( "#target-year" ).slider({ 
 		max: 2100,
 		min: 2000,
-		value: 2050,
-    	change: function(event, ui) { update_controls(event, ui, 'target'); },
+    	change: function(event, ui) { update_controls(event, ui, 'target_year'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("target-year", 2050);
+
 	$( "#target-amount" ).slider({ 
 		max: 10,
 		min: 0,
-		value: 1,
-      change: function(event, ui) { update_controls(event, ui, 'target'); },
- 	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+        change: function(event, ui) { update_controls(event, ui, 'target_amount'); },
+ 	    slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("target-amount", 1);
 
   render();
 });
+
