@@ -14,10 +14,31 @@ $(function () {
 
 // Initialise UI objects
 $(function() {
-	$( ".slider" ).slider({ 
-		max: 2100, 
+	$( "#impl-year" ).slider({ 
+		max: 2100,
 		min: 2000,
-		value: 2012,
+		value: 2015,
+    	change: function(event, ui) { /* render(); */ },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	});
+	$( "#conv-year" ).slider({ 
+		max: 2100,
+		min: 2000,
+		value: 2030,
+    	change: function(event, ui) { /* render(); */ },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	});
+	$( "#target-year" ).slider({ 
+		max: 2100,
+		min: 2000,
+		value: 2050,
+    	change: function(event, ui) { /* render(); */ },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	});
+	$( "#target-amount" ).slider({ 
+		max: 10,
+		min: 0,
+		value: 1,
     	change: function(event, ui) { /* render(); */ },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
