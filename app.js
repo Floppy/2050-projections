@@ -18,6 +18,7 @@ $(function() {
 		max: 2100, 
 		min: 2000,
 		value: 2012,
-        change: function(event, ui) { alert(event.target.id + ' changed to ' + ui.value); }
+    	change: function(event, ui) { /* render(); */ },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
 });
