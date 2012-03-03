@@ -10,3 +10,8 @@ $(function () {
     
     $.plot($("#placeholder"), [ d1, d2, d3 ]);
 });
+
+// Initialise UI objects
+$(function() {
+	$( ".slider" ).slider();
+});
