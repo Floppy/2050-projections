@@ -8,9 +8,6 @@ var render = function () {
   var origin = config.origin;
   var implementation = config.implementation;
   var convergence = config.convergence;
-
-  console.log(implementation);
-
   
   var emissions_per_usd = 0.233;
   var gdp_per_capita = 35000;
@@ -20,8 +17,6 @@ var render = function () {
 
   var g_dash = -0.0126; // -0.042
   var g_dash_y = 0.02;
-
-//[i, Math.pow(1 + g, (implementation - i))]);
 
   var d1 = [];
   var d2 = [];
@@ -34,7 +29,6 @@ var render = function () {
     d1.push([i, emissions(i - origin)]);
   }
 
-  //var x1 = emissions(implementation - origin);
   var x1 = emissions_per_usd * Math.pow(1 + g_x, (implementation - origin));
   var gdp_per_capita = gdp_per_capita * Math.pow(1 + g_y, (implementation - origin));
 
@@ -45,19 +39,14 @@ var render = function () {
   for (var i = implementation; i <= convergence; i += 1) {
     d2.push([i, emissions(i - implementation)]);
   }
-
-
-  // a null signifies separate line segments
-  var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
   
   $.plot($("#placeholder"), [ d1, d2 ]);
 };
 
 var update_controls = function(event, ui, config_var) {
-  config[config_var] = $( "#label-" + event.target.id).text();
+  config[config_var] = parseInt($( "#label-" + event.target.id).text());
   render();
 }
-
 
 // Initialise UI objects
 $(function() {
@@ -72,25 +61,22 @@ $(function() {
 		max: 2100,
 		min: 2000,
 		value: 2030,
-    	change: function(event, ui) {  render();  },
+    	change: function(event, ui) { update_controls(event, ui, 'convergence'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
 	$( "#target-year" ).slider({ 
 		max: 2100,
 		min: 2000,
 		value: 2050,
-    	change: function(event, ui) {  render();  },
+    	change: function(event, ui) { update_controls(event, ui, 'target'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
 	$( "#target-amount" ).slider({ 
 		max: 10,
 		min: 0,
 		value: 1,
-      change: function(event, ui) {
-		console.log($( "#label-" + event.target.id).text());  
-		console.log("snood");
-		 render();  },
- 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+      change: function(event, ui) { update_controls(event, ui, 'target'); }
+ 	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
 
   render();
