@@ -48,36 +48,41 @@ var update_controls = function(event, ui, config_var) {
   render();
 }
 
+var set_slider_value = function (name, value) {
+	$( "#"+name ).slider( "option", "value", value );	
+	$( "#label-"+name ).text(value);
+}
+
 // Initialise UI objects
 $(function() {
 	$( "#impl-year" ).slider({ 
 		max: 2100,
 		min: 2000,
-		value: 2016,
       change: function(event, ui) { update_controls(event, ui, 'implementation'); },
  	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("impl-year", 2015);
 	$( "#conv-year" ).slider({ 
 		max: 2100,
 		min: 2000,
-		value: 2030,
     	change: function(event, ui) { update_controls(event, ui, 'convergence'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("conv-year", 2030);
 	$( "#target-year" ).slider({ 
 		max: 2100,
 		min: 2000,
-		value: 2050,
     	change: function(event, ui) { update_controls(event, ui, 'target'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("target-year", 2050);
 	$( "#target-amount" ).slider({ 
 		max: 10,
 		min: 0,
-		value: 1,
-      change: function(event, ui) { update_controls(event, ui, 'target'); }
- 	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+        change: function(event, ui) { update_controls(event, ui, 'target'); }
+ 	    slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
+	set_slider_value("target-amount", 1);
 
   render();
 });
