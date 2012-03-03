@@ -101,7 +101,7 @@ var render = function () {
 };
 
 var update_controls = function(event, ui, config_var) {
-  config[config_var] = parseInt($( "#label-" + event.target.id).text());
+  config[config_var] = parseFloat($( "#label-" + event.target.id).text());
   render();
 }
 
@@ -119,17 +119,53 @@ $(function() {
       change: function(event, ui) { update_controls(event, ui, 'implementation'); },
  	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
-	set_slider_value("impl-year", 2015);
+	set_slider_value("impl-year", 'implementation', 2015);
 
-	$( "#conv-year" ).slider({ 
+	$( "#conv-gdp-rate" ).slider({
+		max: 0.05,
+		min: -0.05,
+		step: 0.001,
+    	change: function(event, ui) { update_controls(event, ui, 'conv_gdp_rate'); },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	});
+	set_slider_value("conv-gdp-rate", 'conv_gdp_rate', 0.02);
+
+	$( "#conv-emissions-rate" ).slider({
+		max: 0.05,
+		min: -0.05,
+		step: 0.001,
+    	change: function(event, ui) { update_controls(event, ui, 'conv_emissions_rate'); },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	});
+	set_slider_value("conv-emissions-rate", 'conv_emissions_rate', -0.02);
+
+	$( "#conv-year" ).slider({
 		max: 2100,
 		min: 2000,
     	change: function(event, ui) { update_controls(event, ui, 'convergence'); },
  		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
-	set_slider_value("conv-year", 2030);
+	set_slider_value("conv-year", 'convergence', 2030);
 
-	$( "#target-year" ).slider({ 
+	$( "#cont-gdp-rate" ).slider({
+		max: 0.05,
+		min: -0.05,
+		step: 0.001,
+    	change: function(event, ui) { update_controls(event, ui, 'cont_gdp_rate'); },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	});
+	set_slider_value("cont-gdp-rate", 'cont_gdp_rate', 0.02);
+
+	$( "#cont-emissions-rate" ).slider({
+		max: 0.05,
+		min: -0.05,
+		step: 0.001,
+    	change: function(event, ui) { update_controls(event, ui, 'cont_emissions_rate'); },
+ 		slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
+	});
+	set_slider_value("cont-emissions-rate", 'cont_emissions_rate', -0.02);
+	
+	$( "#target-year" ).slider({
 		max: 2100,
 		min: 2000,
     	change: function(event, ui) { update_controls(event, ui, 'target_year'); },
