@@ -16,18 +16,8 @@ var render = function () {
   var emissions_per_usd = 0.233;
   var gdp_per_capita = 35000;
 
-  var g_y = 0.02;
-  var g_x = - 0.01;
-
-  var g_dash = -0.0126; // -0.042
-  var g_dash_y = 0.02;
-
-  var rates_gdp = [ 0.037, config.conv_gdp_rate, config.cont_gdp_rate ];
+  var rates_gdp = [ 0.037,        config.conv_gdp_rate,       config.cont_gdp_rate ];
   var rates_emissions = [ -0.028, config.conv_emissions_rate, config.cont_emissions_rate ];
-
-  var d1 = [];
-  var d2 = [];
-  var d3 = [];
 
   var plots = [ [], [], [] ];
 
@@ -47,8 +37,6 @@ var render = function () {
 
 
   for(var phase = 0; phase <= 2; phase++) {
-    // emissions_per_usd =
-	// gdp_per_capita
 
 	for(var i = milestones[phase]; i <= milestones[phase+1]; i++) {
 
