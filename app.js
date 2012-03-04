@@ -3,6 +3,13 @@ var config = {
   running: false
 };
 
+var alert_bad_inputs = function(phase, milestones) {
+  alert("Milestone #" + phase.toString() + " (" + 
+		milestones[phase].toString() + ") after milestone #" +
+		(phase+1).toString() + " (" + 
+		milestones[phase+1].toString() + ")");
+}
+
 var render = function () {
   if(!config.running) {
 	return;
@@ -44,10 +51,7 @@ var render = function () {
 
   for(var phase = 0; phase <= 2; phase++) {
 	if(milestones[phase] > milestones[phase+1]) {
-	  alert("Milestone #" + phase.toString() + " (" + 
-			milestones[phase].toString() + ") after milestone #" +
-			(phase+1).toString() + " (" + 
-			milestones[phase+1].toString() + ")");
+	  alert_bad_inputs(phase, milestones);
 	  return;
 	}
 
