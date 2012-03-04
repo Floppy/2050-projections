@@ -67,7 +67,7 @@ var render = function () {
 	}
 	years = milestones[phase+1] - milestones[phase];
 	emissions_per_usd *= Math.pow(1 + rates_emissions[phase], years);
-	gdp_per_capita *= Math.pow(1 + rates_gdp[phase], years);
+	gdp_per_capita    *= Math.pow(1 + rates_gdp[phase],       years);
   }
 
   $.plot($("#placeholder"), plots);
