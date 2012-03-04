@@ -1,5 +1,5 @@
 var config = {
-  origin: 2012,
+  origin: 2000,
   running: false
 };
 
@@ -32,8 +32,6 @@ var render = function () {
 						];
 
   var plots = [ [], [], [] ];
-
-  console.log(config);
 
   if(origin > implementation) {
 	alert("origin > implementation");
@@ -109,7 +107,7 @@ $(function() {
 	var selector = "#" + name;
 	var min = slider[1];
 	var max = slider[2];
-	var default_value = slider[5];
+	var default_value = slider[4];
 
 	if(max < min) {
 	  alert("internal error: max value for slider < min value");
@@ -132,6 +130,5 @@ $(function() {
   
   config['running'] = true;
   render();
-  console.log("init");
 });
 
