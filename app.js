@@ -119,12 +119,8 @@ $(function() {
 	  max: max,
 	  min: min,
 	  step: slider[3],
-	  change: function(event, ui) { 
-		update_controls(event, ui, name);
-	  },
-	  slide: function(event, ui)  { 
-		$('#label-' + event.target.id).text(ui.value); 
-	  }
+	  change: function(event, ui) { update_controls(event, ui, name); },
+	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
 	set_slider_value(name, name, default_value);
   };
