@@ -67,9 +67,6 @@ var render = function () {
 
   $.plot($("#placeholder"), plots);
 
-
-
-
 };
 
 var update_controls = function(event, ui, config_var) {
