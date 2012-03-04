@@ -33,14 +33,13 @@ var render = function () {
 
   var plots = [ [], [], [] ];
 
-  if(origin > implementation) {
-	alert("origin > implementation");
-  }
-  if(implementation > convergence) {
-	alert("wrong: implementation > convergence");
-  }
-  if(convergence > target_year) {
-	alert("wrong");
+  for(var phase = 0; phase <= 2; phase++) {
+	if(milestones[phase] > milestones[phase+1]) {
+	  alert("Milestone #" + phase.toString() + " (" + 
+			milestones[phase].toString() + ") after milestone #" +
+			(phase+1).toString() + " (" + 
+			milestones[phase+1].toString() + ")");
+	}
   }
 
   var emissions = function(t, emissions_density_at_p0, emissions_density_change, growth, gdp_at_p0) {
