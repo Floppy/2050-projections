@@ -39,6 +39,7 @@ var render = function () {
 			milestones[phase].toString() + ") after milestone #" +
 			(phase+1).toString() + " (" + 
 			milestones[phase+1].toString() + ")");
+	  return;
 	}
   }
 
