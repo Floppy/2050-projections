@@ -42,7 +42,7 @@ var render = function () {
   var plot = 0;
 
   // e_d_ == emissions density
-  var emissions = function(t, e_d_base, e_d_change, gdp_growth, gdp_base) {
+  var emissions = function(t, e_d_base, e_d_change, gdp_base, gdp_growth) {
 	return (
 	  e_d_base * Math.pow(1 + e_d_change, t) * 
 	  gdp_base * Math.pow(1 + gdp_growth, t)
@@ -58,11 +58,11 @@ var render = function () {
 	for(var year = milestones[phase]; year <= milestones[phase+1]; year++) {
 	  var years_elapsed = year - milestones[phase];
 	  var emitted = emissions(years_elapsed,
-								  emissions_per_usd,
-								  rates_emissions[phase],
-								  rates_gdp[phase],
-								  gdp_per_capita
-							   );
+							  emissions_per_usd,
+							  rates_emissions[phase],
+							  gdp_per_capita,
+							  rates_gdp[phase]
+							 );
 	  plots[plot].push([year, emitted]);
 	}
 	years = milestones[phase+1] - milestones[phase];
