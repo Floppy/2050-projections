@@ -15,12 +15,7 @@ var render = function () {
 	return;
   }
   
-  var origin = config.origin;
-  var implementation = config['impl-year'];
-  var convergence = config['conv-year'];
-  var target_year = config['target-year'];
-
-  var milestones = [ origin, 
+  var milestones = [ config['origin'], 
 					 config['impl-year'], 
 					 config['conv-year'], 
 					 config['target-year']
