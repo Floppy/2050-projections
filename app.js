@@ -1,25 +1,39 @@
 var config = {
   origin: 2012,
-  implementation: 2016,
-  convergence: 2035,
-  target_year: 2050
+  running: false
 };
 
 var render = function () {
+  if(!config.running) {
+	return;
+  }
+  
   var origin = config.origin;
-  var implementation = config.implementation;
-  var convergence = config.convergence;
-  var target_year = config.target_year;
+  var implementation = config['impl-year'];
+  var convergence = config['conv-year'];
+  var target_year = config['target-year'];
 
-  var milestones = [ origin, implementation, convergence, target_year ];
+  var milestones = [ origin, 
+					 config['impl-year'], 
+					 config['conv-year'], 
+					 config['target-year']
+				   ];
 
   var emissions_per_usd = 0.233;
   var gdp_per_capita = 35000;
 
-  var rates_gdp = [ 0.037,        config.conv_gdp_rate,       config.cont_gdp_rate ];
-  var rates_emissions = [ -0.028, config.conv_emissions_rate, config.cont_emissions_rate ];
+  var rates_gdp = [ 0.037, 
+					config['conv-gdp-rate'], 
+					config['cont-gdp-rate'] 
+				  ];
+  var rates_emissions = [ -0.028, 
+						  config['conv-emissions-rate'], 
+						  config['cont-emissions-rate'] 
+						];
 
   var plots = [ [], [], [] ];
+
+  console.log(config);
 
   if(origin > implementation) {
 	alert("origin > implementation");
@@ -62,8 +76,8 @@ var render = function () {
 };
 
 var update_controls = function(event, ui, config_var) {
-  config[config_var] = parseFloat($( "#label-" + event.target.id).text());
-  render();
+  var data = $( "#label-" + event.target.id).text();
+  config[event.target.id] = parseFloat(data);
 }
 
 var set_slider_value = function (name, config_var, value) {
@@ -73,16 +87,16 @@ var set_slider_value = function (name, config_var, value) {
 }
 
 
-sliders = [
+var sliders = [
   // selector, min, max, step, config_var, default
-  [ "impl-year", 2000, 2100, 1, 'implementation', 2015 ],
-  [ "conv-gdp-rate", -0.05, 0.05, 0.001, 'conv_gdp_rate', 0.02 ],
-  [ "conv-emissions-rate", 0.05, -0.05, 0.001, 'conv_emissions_rate', -0.02 ],
-  [ "conv-year", 2000, 2100, 1, 'convergence', 2030 ],
-  [ "cont-gdp-rate", 0.05, -0.05, 0.001, 'cont_gdp_rate', 0.02 ],
-  [ "cont-emissions-rate", 0.05, -0.05, 0.001, "cont_emissions_rate", -0.02 ],
-  [ "target-year", 2000, 2100, 1, 'target_year', 2050 ],
-  [ "target-amount", 10, 0, 1, 'target_amount', 1 ]
+  [ "impl-year", 2000, 2100, 1, 2016 ],
+  [ "conv-gdp-rate", -0.05, 0.05, 0.001, 0.02 ],
+  [ "conv-emissions-rate", -0.05, 0.05, 0.001, -0.02 ],
+  [ "conv-year", 2000, 2100, 1, 2030 ],
+  [ "cont-gdp-rate", -0.05, 0.05, 0.001, 0.02 ],
+  [ "cont-emissions-rate", -0.05, 0.05, 0.001, -0.02 ],
+  [ "target-year", 2000, 2100, 1, 2050 ],
+  [ "target-amount", 0, 10, 1, 1 ]
 ];
 
 
@@ -90,20 +104,34 @@ sliders = [
 $(function() {
   for(var s in sliders) {
 	var slider = sliders[s];
-	var selector = "#" + slider[0];
+	var name = slider[0];
+	var selector = "#" + name;
+	var min = slider[1];
+	var max = slider[2];
+	var default_value = slider[5];
+
+	if(max < min) {
+	  alert("internal error: max value for slider < min value");
+	  continue;
+	}
 
 	$(selector).slider({
-	  max: slider[2],
-	  min: slider[1],
+	  max: max,
+	  min: min,
 	  step: slider[3],
 	  change: function(event, ui) { 
-		update_controls(event, ui, slider[4]); 
+		update_controls(event, ui, name);
+		render();
 	  },
-	  slide: function(event, ui)  { $('#label-' + event.target.id).text(ui.value); }
+	  slide: function(event, ui)  { 
+		$('#label-' + event.target.id).text(ui.value); 
+	  }
 	});
-	set_slider_value(slider[0], slider[4], slider[5]);
+	set_slider_value(name, name, default_value);
   };
-
+  
+  config['running'] = true;
   render();
+  console.log("init");
 });
 
