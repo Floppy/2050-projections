@@ -32,6 +32,11 @@ var render = function () {
 						];
 
   var plots = [ [] ];
+  var plot = 0;
+
+  var emissions = function(t, emissions_density_at_p0, emissions_density_change, growth, gdp_at_p0) {
+	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_at_p0 * Math.pow(1 + growth, t);
+  };
 
   for(var phase = 0; phase <= 2; phase++) {
 	if(milestones[phase] > milestones[phase+1]) {
@@ -43,17 +48,11 @@ var render = function () {
 	}
   }
 
-  var emissions = function(t, emissions_density_at_p0, emissions_density_change, growth, gdp_at_p0) {
-	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_at_p0 * Math.pow(1 + growth, t);
-  };
-
-  var plot = 0;
-
   for(var phase = 0; phase <= 2; phase++) {
 
 	for(var i = milestones[phase]; i <= milestones[phase+1]; i++) {
 
-	 plots[plot].push([i, 
+	  plots[plot].push([i, 
 						emissions(i - milestones[phase],
 								  emissions_per_usd,
 								  rates_emissions[phase],
