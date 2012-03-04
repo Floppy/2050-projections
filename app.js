@@ -46,9 +46,6 @@ var render = function () {
 			milestones[phase+1].toString() + ")");
 	  return;
 	}
-  }
-
-  for(var phase = 0; phase <= 2; phase++) {
 
 	for(var i = milestones[phase]; i <= milestones[phase+1]; i++) {
 
