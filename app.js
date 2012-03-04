@@ -47,10 +47,11 @@ var render = function () {
 	  return;
 	}
 
-	for(var i = milestones[phase]; i <= milestones[phase+1]; i++) {
+	for(var year = milestones[phase]; year <= milestones[phase+1]; year++) {
+	  var years_elapsed = year - milestones[phase];
 
-	  plots[plot].push([i, 
-						emissions(i - milestones[phase],
+	  plots[plot].push([year, 
+						emissions(years_elapsed,
 								  emissions_per_usd,
 								  rates_emissions[phase],
 								  rates_gdp[phase],
