@@ -34,8 +34,12 @@ var render = function () {
   var plots = [ [] ];
   var plot = 0;
 
-  var emissions = function(t, emissions_density_at_p0, emissions_density_change, growth, gdp_at_p0) {
-	return emissions_density_at_p0 * Math.pow(1 + emissions_density_change, t) * gdp_at_p0 * Math.pow(1 + growth, t);
+  // e_d_ == emissions density
+  var emissions = function(t, e_d_base, e_d_change, gdp_growth, gdp_base) {
+	return (
+	  e_d_base * Math.pow(1 + e_d_change, t) * 
+	  gdp_base * Math.pow(1 + gdp_growth, t)
+	);
   };
 
   for(var phase = 0; phase <= 2; phase++) {
