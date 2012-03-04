@@ -78,6 +78,7 @@ var render = function () {
 var update_controls = function(event, ui, config_var) {
   var data = $( "#label-" + event.target.id).text();
   config[event.target.id] = parseFloat(data);
+  render();
 }
 
 var set_slider_value = function (name, config_var, value) {
@@ -121,7 +122,6 @@ $(function() {
 	  step: slider[3],
 	  change: function(event, ui) { 
 		update_controls(event, ui, name);
-		render();
 	  },
 	  slide: function(event, ui)  { 
 		$('#label-' + event.target.id).text(ui.value); 
