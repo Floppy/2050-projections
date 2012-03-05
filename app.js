@@ -1,7 +1,7 @@
 var config = {
   origin: 2000,
   running: false,
-  "bau-gdp-rate": 0.037,
+  "bau-gdp-rate": 0.037, // bau == Business As Usual
   "bau-emissions-rate": -0.028
 };
 
@@ -28,14 +28,10 @@ var render = function () {
   var emissions_per_usd = 0.233;
   var gdp_per_capita = 35000;
 
-  var rates_gdp = [ config['bau-gdp-rate'], 
-					config['conv-gdp-rate'], 
-					config['cont-gdp-rate'] 
-				  ];
-  var rates_emissions = [ config['bau-emissions-rate'], 
-						  config['conv-emissions-rate'], 
-						  config['cont-emissions-rate'] 
-						];
+  var rates_gdp = 
+	phase_names.map(function(i) { return config[i + '-gdp-rate'];  });
+  var rates_emissions = 
+	phase_names.map(function(i) { return config[i + '-emissions-rate']; });
 
   var plots = [ [] ];
   var plot = 0;
@@ -85,65 +81,6 @@ var set_slider_value = function (name, config_var, value) {
 	config[config_var] = value;
 }
 
-
-var sliders = [
-  {
-    "default_value": 2016, 
-    "max": 2100, 
-    "step": 1, 
-    "name": "impl-year", 
-    "min": 2000
-  }, 
-  {
-    "default_value": 0.02, 
-    "max": 0.05, 
-    "step": 0.001, 
-    "name": "conv-gdp-rate", 
-    "min": -0.05
-  }, 
-  {
-    "default_value": -0.02, 
-    "max": 0.05, 
-    "step": 0.001, 
-    "name": "conv-emissions-rate", 
-    "min": -0.05
-  }, 
-  {
-    "default_value": 2030, 
-    "max": 2100, 
-    "step": 1, 
-    "name": "conv-year", 
-    "min": 2000
-  }, 
-  {
-    "default_value": 0.02, 
-    "max": 0.05, 
-    "step": 0.001, 
-    "name": "cont-gdp-rate", 
-    "min": -0.05
-  }, 
-  {
-    "default_value": -0.02, 
-    "max": 0.05, 
-    "step": 0.001, 
-    "name": "cont-emissions-rate", 
-    "min": -0.05
-  }, 
-  {
-    "default_value": 2050, 
-    "max": 2100, 
-    "step": 1, 
-    "name": "target-year", 
-    "min": 2000
-  }, 
-  {
-    "default_value": 1, 
-    "max": 10, 
-    "step": 1, 
-    "name": "target-amount", 
-    "min": 0
-  }
-];
 
 // Initialise UI objects
 $(function() {
