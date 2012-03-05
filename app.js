@@ -1,6 +1,8 @@
 var config = {
   origin: 2000,
-  running: false
+  running: false,
+  "bau-gdp-rate": 0.037,
+  "bau-emissions-rate": -0.028
 };
 
 var alert_bad_inputs = function(phase, milestones) {
@@ -14,6 +16,8 @@ var render = function () {
   if(!config.running) {
 	return;
   }
+
+  var phase_names = [ 'bau', 'conv', 'cont' ];
   
   var milestones = [ config['origin'], 
 					 config['impl-year'], 
@@ -24,11 +28,11 @@ var render = function () {
   var emissions_per_usd = 0.233;
   var gdp_per_capita = 35000;
 
-  var rates_gdp = [ 0.037, 
+  var rates_gdp = [ config['bau-gdp-rate'], 
 					config['conv-gdp-rate'], 
 					config['cont-gdp-rate'] 
 				  ];
-  var rates_emissions = [ -0.028, 
+  var rates_emissions = [ config['bau-emissions-rate'], 
 						  config['conv-emissions-rate'], 
 						  config['cont-emissions-rate'] 
 						];
@@ -83,27 +87,74 @@ var set_slider_value = function (name, config_var, value) {
 
 
 var sliders = [
-  // selector, min, max, step, config_var, default
-  [ "impl-year", 2000, 2100, 1, 2016 ],
-  [ "conv-gdp-rate", -0.05, 0.05, 0.001, 0.02 ],
-  [ "conv-emissions-rate", -0.05, 0.05, 0.001, -0.02 ],
-  [ "conv-year", 2000, 2100, 1, 2030 ],
-  [ "cont-gdp-rate", -0.05, 0.05, 0.001, 0.02 ],
-  [ "cont-emissions-rate", -0.05, 0.05, 0.001, -0.02 ],
-  [ "target-year", 2000, 2100, 1, 2050 ],
-  [ "target-amount", 0, 10, 1, 1 ]
+  {
+    "default_value": 2016, 
+    "max": 2100, 
+    "step": 1, 
+    "name": "impl-year", 
+    "min": 2000
+  }, 
+  {
+    "default_value": 0.02, 
+    "max": 0.05, 
+    "step": 0.001, 
+    "name": "conv-gdp-rate", 
+    "min": -0.05
+  }, 
+  {
+    "default_value": -0.02, 
+    "max": 0.05, 
+    "step": 0.001, 
+    "name": "conv-emissions-rate", 
+    "min": -0.05
+  }, 
+  {
+    "default_value": 2030, 
+    "max": 2100, 
+    "step": 1, 
+    "name": "conv-year", 
+    "min": 2000
+  }, 
+  {
+    "default_value": 0.02, 
+    "max": 0.05, 
+    "step": 0.001, 
+    "name": "cont-gdp-rate", 
+    "min": -0.05
+  }, 
+  {
+    "default_value": -0.02, 
+    "max": 0.05, 
+    "step": 0.001, 
+    "name": "cont-emissions-rate", 
+    "min": -0.05
+  }, 
+  {
+    "default_value": 2050, 
+    "max": 2100, 
+    "step": 1, 
+    "name": "target-year", 
+    "min": 2000
+  }, 
+  {
+    "default_value": 1, 
+    "max": 10, 
+    "step": 1, 
+    "name": "target-amount", 
+    "min": 0
+  }
 ];
-
 
 // Initialise UI objects
 $(function() {
   for(var s in sliders) {
 	var slider = sliders[s];
-	var name = slider[0];
+	var name = slider.name;
 	var selector = "#" + name;
-	var min = slider[1];
-	var max = slider[2];
-	var default_value = slider[4];
+	var min = slider.min;
+	var max = slider.max;
+	var step = slider.step;
+	var default_value = slider.default_value;
 
 	if(max < min) {
 	  alert("internal error: max value for slider < min value");
@@ -113,7 +164,7 @@ $(function() {
 	$(selector).slider({
 	  max: max,
 	  min: min,
-	  step: slider[3],
+	  step: step,
 	  change: function(event, ui) { update_controls(event, ui, name); },
 	  slide: function(event, ui) { $('#label-' + event.target.id).text(ui.value); }
 	});
