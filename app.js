@@ -28,42 +28,48 @@ var render = function () {
   var emissions_per_usd = 0.233;
   var gdp_per_capita = 35000;
 
-  var rates_gdp = 
-	phase_names.map(function(i) { return config[i + '-gdp-rate'];  });
-  var rates_emissions = 
-	phase_names.map(function(i) { return config[i + '-emissions-rate']; });
+  var plots = [];
 
-  var plots = [ [] ];
-  var plot = 0;
+  var plot_country = function(milestones, emissions_per_usd, gdp_per_capita) {
 
-  // e_d_ == emissions density
-  var emissions = function(t, e_d_base, e_d_change, gdp_base, gdp_growth) {
-	return (
-	  e_d_base * Math.pow(1 + e_d_change, t) * 
-	  gdp_base * Math.pow(1 + gdp_growth, t)
-	);
-  };
+	var rates_gdp = 
+	  phase_names.map(function(i) { return config[i + '-gdp-rate'];  });
+	var rates_emissions = 
+	  phase_names.map(function(i) { return config[i + '-emissions-rate']; });
 
-  for(var phase = 0; phase <= 2; phase++) {
-	if(milestones[phase] > milestones[phase+1]) {
-	  alert_bad_inputs(phase, milestones);
-	  return;
+	// e_d_ == emissions density
+	var emissions = function(t, e_d_base, e_d_change, gdp_base, gdp_growth) {
+	  return (
+		e_d_base * Math.pow(1 + e_d_change, t) * 
+	    gdp_base * Math.pow(1 + gdp_growth, t)
+	  );
+	};
+
+	var plot = [];
+
+	for(var phase = 0; phase <= 2; phase++) {
+	  if(milestones[phase] > milestones[phase+1]) {
+		alert_bad_inputs(phase, milestones);
+		return;
+	  }
+
+	  for(var year = milestones[phase]; year <= milestones[phase+1]; year++) {
+		var years_elapsed = year - milestones[phase];
+		var emitted = emissions(years_elapsed,
+								emissions_per_usd,
+								rates_emissions[phase],
+								gdp_per_capita,
+								rates_gdp[phase]
+							   );
+		plot.push([year, emitted]);
+	  }
+	  years = milestones[phase+1] - milestones[phase];
+	  emissions_per_usd *= Math.pow(1 + rates_emissions[phase], years);
+	  gdp_per_capita    *= Math.pow(1 + rates_gdp[phase],       years);
 	}
-
-	for(var year = milestones[phase]; year <= milestones[phase+1]; year++) {
-	  var years_elapsed = year - milestones[phase];
-	  var emitted = emissions(years_elapsed,
-							  emissions_per_usd,
-							  rates_emissions[phase],
-							  gdp_per_capita,
-							  rates_gdp[phase]
-							 );
-	  plots[plot].push([year, emitted]);
-	}
-	years = milestones[phase+1] - milestones[phase];
-	emissions_per_usd *= Math.pow(1 + rates_emissions[phase], years);
-	gdp_per_capita    *= Math.pow(1 + rates_gdp[phase],       years);
+	return plot;
   }
+  plots.push(plot_country(milestones, emissions_per_usd, gdp_per_capita));
 
   $.plot($("#placeholder"), plots);
 
