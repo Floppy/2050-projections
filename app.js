@@ -1,6 +1,6 @@
 var config = {
-  origin: 2000,
-  running: false,
+  "origin-year": 2000,
+  "running": false,
   "bau-gdp-rate": 0.037, // bau == Business As Usual
   "bau-emissions-rate": -0.028
 };
@@ -59,7 +59,7 @@ var render = function () {
 
   var phase_names = [ 'bau', 'conv', 'cont' ];
   
-  var milestones = [ config['origin'], 
+  var milestones = [ config['origin-year'], 
 					 config['impl-year'], 
 					 config['conv-year'], 
 					 config['target-year']
