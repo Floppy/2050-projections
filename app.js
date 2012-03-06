@@ -73,7 +73,7 @@ var render = function () {
 
   var plots = [];
   plots.push(plot_country(phase_names, milestones, emissions_per_usd, gdp_per_capita));
-  //plots.push(plot_country(phase_names, milestones, emissions_per_usd * 0.8, gdp_per_capita * 0.4));
+  plots.push(plot_country(phase_names, milestones, emissions_per_usd * 0.8, gdp_per_capita * 0.4));
 
   $.plot($("#placeholder"), plots);
 
