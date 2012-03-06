@@ -5,11 +5,14 @@ var config = {
   "bau-emissions-rate": -0.028
 };
 
-var alert_bad_inputs = function(phase, milestones) {
-  alert("Milestone #" + phase.toString() + " (" + 
-		milestones[phase].toString() + ") after milestone #" +
-		(phase+1).toString() + " (" + 
-		milestones[phase+1].toString() + ")");
+var alert_bad_inputs = function(phase_id, milestones) {
+  var phase1 = phase_id.toString();
+  var phase2 = (phase_id+1).toString();
+  var milestone1 = milestones[phase_id].toString();
+  var milestone2 = milestones[phase_id+1].toString();
+
+  alert("Milestone #" + phase1 + " (" + milestone1 + ") after milestone #" +
+		phase2 + " (" + milestone2 + ")");
 }
 
 var plot_country = function(phase_names, milestones, emissions_per_usd, gdp_per_capita) {
